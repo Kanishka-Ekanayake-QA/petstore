@@ -73,9 +73,84 @@
 		},
 		{
 			"name": "Insert new pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Status Code\r",
+							"pm.test(\"Request is successful with a status code of 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Response Time\r",
+							"pm.test(\"API Response time is \"+pm.response.responseTime, function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"})\r",
+							"\r",
+							"//Content-Type\r",
+							"pm.test(\"Response type is \"+pm.response.headers.get(\"Content-Type\"),function(){\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.be.equal(\"application/json\")\r",
+							"})\r",
+							"\r",
+							"\r",
+							"//Access-Control-Allow-Headers\r",
+							"pm.test(\"Access-Control-Allow-Headers is \"+pm.response.headers.get(\"Access-Control-Allow-Headers\"),function(){\r",
+							"    pm.expect(pm.response.headers.get(\"Access-Control-Allow-Headers\")).to.be.equal(\"Content-Type, api_key, Authorization\")\r",
+							"})\r",
+							"\r",
+							"//Check correct status return\r",
+							"pm.test(\"The expected response content-type is correct \", function(){\r",
+							"    let status={\r",
+							"        \"status\":\"application/json\"\r",
+							"    };\r",
+							"    let b={\r",
+							"        \"status\":pm.response.headers.get(\"Content-Type\")\r",
+							"    };\r",
+							"    pm.expect(status).eql(b);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "true",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "api_key",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"string\"\r\n  },\r\n  \"name\": \"doggie\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/pet",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
 			},
 			"response": []
 		}
