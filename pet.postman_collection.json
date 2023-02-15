@@ -70,6 +70,14 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Insert new pet",
+			"request": {
+				"method": "POST",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }
